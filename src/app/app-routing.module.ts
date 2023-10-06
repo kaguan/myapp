@@ -5,7 +5,7 @@ import { ChannelsPageComponent } from './channels-page/channels-page.component';
 
 
 const routes: Routes = [
-  {path: 'channelsPage', component: ChannelsPageComponent},
+  {path: '', component: ChannelsPageComponent},
   {path: 'chat-page', component: ChatPageComponent},
 ];
 

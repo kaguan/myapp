@@ -187,3 +187,59 @@ a {
 		display: none;
 	}
 }
+
+/*here*/
+.form-control {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+.mat-select {
+  width: 100%;
+}
+
+.btn {
+  margin-top: 20px;
+  width: 100%;
+  text-align: center; /* Center-align the button */
+}
+
+/* Update the button styles */
+.btn {
+	cursor: pointer;
+	padding: 5px 15px;
+	background: var(--dark-color-a); /* Change to the desired button color */
+	color: white; /* Change text color to contrast with the button color */
+	border: 0;
+	font-size: 17px;
+  }
+  
+  /* Update the background color of the form container */
+  .join-main {
+	padding: 30px 40px;
+	background: var(--dark-color-b); /* Change to the desired background color */
+  }
+  
+  /* Center-align the button */
+  .join-main .btn {
+	margin-top: 20px;
+	width: 100%;
+	text-align: center;
+  }
+  
+  /* Center-align the message and icon */
+  .message {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 20px;
+  }
+  
+  .message i {
+	margin-right: 10px;
+  }
+  

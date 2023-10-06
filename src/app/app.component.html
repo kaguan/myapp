@@ -1,5 +1,6 @@
 
-<app-channels-page> Channels </app-channels-page>
+<router-outlet></router-outlet>
+
 
 <p>
   <button (click)="connect()">Connect to chat</button>
@@ -27,7 +28,7 @@
   <ul>
     <li *ngFor="let message of messages">
       {{ message['message'] }}
-      <!-- {{ message['createdAt'] }} -->
+      
     </li>
   </ul>
   
