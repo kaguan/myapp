@@ -179,11 +179,85 @@ a {
 }
 
 @media (max-width: 700px) {
-	.chat-main {
-		display: block;
-	}
+/* CSS for making chat-messages take up the full height of chat-main */
+.chat-main {
+	display: grid;
+	grid-template-columns: 1fr 4fr; /* Adjust the column ratio as needed */
+	max-width: 1300px; /* Adjust the max width as needed */
+	margin: 0 auto; /* Center the content horizontally */
+  }
+  
+  .chat-messages {
+	flex: 1; /* Allow chat-messages to take up available vertical space */
+	padding: 30px; /* Increase padding for more spacing */
+	overflow-y: scroll;
+	max-height: none; /* Remove max-height to allow it to expand */
+  }
+  
 
 	.chat-sidebar {
 		display: none;
 	}
 }
+/* CSS for the modified structure */
+.message-input {
+	width: 100%;
+	margin-bottom: 10px; /* Adjust the margin as needed */
+	margin-right: 10px;
+  }
+  
+  .message-button {
+	text-align: right; /* Align the button to the right */
+  }
+  
+
+  /* CSS for making chat-messages bigger */
+.mat-list-item{
+	margin-right: 10px;
+}
+
+.mat-sidenav{
+	margin-right: 10px;
+}
+
+.user-list {
+	display: flex;
+	flex-direction: column; /* Stack buttons vertically */
+	padding-right: 20px;
+  }
+
+  .left-side{
+	margin-right: 20px;
+  }
+
+  /* Add this CSS to your stylesheet */
+.example-sidenav {
+	margin-right: 30px; /* Adjust the width as needed */
+	padding-left: 10px; 
+
+  }
+  
+  .show-friends-button {
+	text-align: center; /* Center horizontally */
+  padding-top: 20px;
+  }
+  
+  .show-friends {
+	/* Your button styles here */
+	padding: 10px 20px;
+  }
+  
+  .example-sidenav-content{
+	display: flex;
+
+	flex-direction: column;
+	height: fixed; /* Set a fixed height */
+  }
+  
+  .chat-messages {
+	height: 400px; /* Adjust the height as needed */
+	overflow-y: auto; /* Add vertical scroll when content overflows */
+  }
+  
+  
+  

@@ -1,62 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
-  <link rel="stylesheet" href="chat-page.component.css">
-  <title>ChatCord App</title>
-</head>
-<body>
-  <div class="chat-container">
-    <header class="chat-header">
-      <h1><i class="fas fa-smile"></i> ChatCord</h1>
-      <a href="index.html" class="btn">Leave Room</a>
-    </header>
-    <main class="chat-main">
-      <div class="chat-sidebar">
-        <h3><i class="fas fa-comments"></i> Room Name:</h3>
-        <h2 id="room-name">JavaScript</h2>
-        <h3><i class="fas fa-users"></i> Users</h3>
-        <ul id="users">
-          <li>Brad</li>
-          <li>John</li>
-          <li>Mary</li>
-          <li>Paul</li>
-          <li>Mike</li>
-        </ul>
+<mat-drawer-container class="example-container" autosize>
+  <mat-drawer #drawer class="example-sidenav" mode="side" >
+    <!-- Chat Sidebar -->
+    <mat-nav-list>
+      <h3><mat-icon>group</mat-icon> Current Chats </h3>
+      <mat-list class="user-list">
+        <button mat-button *ngFor="let channel of conversations" (click)="getMessages(channel)">{{ channel.name }}</button>
+      </mat-list>
+      <div>
+        {{ listConversationsResult }}
       </div>
+      
+    </mat-nav-list>
+  </mat-drawer>
+
+
+  <div class="example-sidenav-content">
+    <div class="show-friends-button">
+    <button mat-raised-button class="show-friends" type="button" mat-button (click)="drawer.toggle()">
+      Show Actual Chats
+    </button>
+  </div>
+    <!-- Chat Header -->
+    <mat-toolbar color="primary" class="chat-header">
+      <span><mat-icon>fitness_center</mat-icon>{{ selectedChannelName || 'Fitn3ss App' }} </span>
+      <button mat-icon-button><mat-icon>exit_to_app</mat-icon></button>
+    </mat-toolbar>
+    <!-- Chat Main Content -->
+
       <div class="chat-messages">
-					<div class="message">
-						<p class="meta">Brad <span>9:12pm</span></p>
-						<p class="text">
-							Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi,
-							repudiandae.
-						</p>
-					</div>
-					<div class="message">
-						<p class="meta">Mary <span>9:15pm</span></p>
-						<p class="text">
-							Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi,
-							repudiandae.
-						</p>
-					</div>
-      </div>
-    </main>
+        <div class="message" *ngFor="let message of messages">
+          <!-- <p class="meta">{{ message.sender }} <span>{{ message.timestamp }}</span></p> -->
+          <p class="text">{{ message.message }}</p>
+        </div>
+        
+
+      <!-- Chat Form -->
+      
+    </div>
     <div class="chat-form-container">
       <form id="chat-form">
-        <input
-          id="msg"
-          type="text"
-          placeholder="Enter Message"
-          required
-          autocomplete="off"
-        />
-        <button class="btn"><i class="fas fa-paper-plane"></i> Send</button>
+        <mat-form-field class="message-input">
+          <input matInput #messageInput
+            id="msg"
+            type="text"
+            placeholder="Enter Message"
+            required
+            autocomplete="off"
+            
+            (input)="updateTextMessage($event)"
+          />
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="sendMessage()"><mat-icon>send</mat-icon> Send</button>
       </form>
     </div>
   </div>
-
-  <script src="js/main.js"></script>
-</body>
-</html>
+</mat-drawer-container>

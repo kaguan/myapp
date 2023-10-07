@@ -25,6 +25,8 @@ export class ChannelsPageComponent {
 
   ngOnInit() {
     this.chatService.init();
+    this.connect();
+    this.startConversation();
   }
 
   connect() {
