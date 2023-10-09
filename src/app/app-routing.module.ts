@@ -5,8 +5,8 @@ import { ChannelsPageComponent } from './channels-page/channels-page.component';
 
 
 const routes: Routes = [
-  {path: '', component: ChannelsPageComponent},
-  {path: 'chat-page', component: ChatPageComponent},
+  {path: 'channel-page', component: ChannelsPageComponent},
+  {path: '', component: ChatPageComponent},
 ];
 
 @NgModule({

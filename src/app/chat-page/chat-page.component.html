@@ -4,8 +4,11 @@
     <mat-nav-list>
       <h3><mat-icon>group</mat-icon> Current Chats </h3>
       <mat-list class="user-list">
-        <button mat-button *ngFor="let channel of conversations" (click)="getMessages(channel)">{{ channel.name }}</button>
+        <button mat-button *ngFor="let channel of conversations" [value]="channel.name" (click)="getMessages(channel)">{{ channel.name }}</button>
       </mat-list>
+      
+
+
       <div>
         {{ listConversationsResult }}
       </div>
