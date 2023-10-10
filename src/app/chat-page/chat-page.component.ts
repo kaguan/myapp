@@ -2,6 +2,7 @@ import { Component,ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ChatService } from '../services/chat.service';
 
+
 @Component({
   selector: 'app-chat-page',
   templateUrl: './chat-page.component.html',
@@ -129,5 +130,32 @@ export class ChatPageComponent {
       );
     }
   }
+  
+  formatTimestamp(timestamp: number) {
+    const date = new Date(timestamp);
+      // Format the month abbreviation (e.g., Oct)
+  const monthAbbreviation = date.toLocaleString('default', { month: 'short' });
+
+  // Format the day with a leading zero (e.g., 09)
+  const day = ('0' + date.getDate()).slice(-2);
+
+  // Format the year (e.g., 2023)
+  const year = date.getFullYear();
+
+  // Format the hours (1-12) and minutes (e.g., 9:30)
+  const hours = date.getHours() % 12 || 12; // Convert to 12-hour format
+  const minutes = ('0' + date.getMinutes()).slice(-2);
+  const time = `${hours}:${minutes}`;
+
+  // Format the AM/PM indicator (e.g., am/pm)
+  const ampm = date.getHours() < 12 ? 'am' : 'pm';
+
+  // Combine the formatted parts into the desired format
+  const formattedTimestamp = `${monthAbbreviation}. ${day} ${year} | ${time}${ampm}`;
+
+    return formattedTimestamp;
+  }
+  
+
 
 }

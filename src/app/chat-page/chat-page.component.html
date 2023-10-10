@@ -1,6 +1,6 @@
 <mat-drawer-container class="example-container" autosize>
-  <mat-drawer #drawer class="example-sidenav" mode="side" >
-    <!-- Chat Sidebar -->
+ <!--  <mat-drawer #drawer class="example-sidenav" mode="side" >
+    <!-- Chat Sidebar
     <mat-nav-list>
       <h3><mat-icon>group</mat-icon> Current Chats </h3>
       <mat-list class="user-list">
@@ -23,38 +23,45 @@
       Show Actual Chats
     </button>
   </div>
+ -->
+  <mat-form-field>
+    <mat-label>Select</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let channel of conversations" [value]="channel.name" (click)="getMessages(channel)">{{ channel.name }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
     <!-- Chat Header -->
     <mat-toolbar color="primary" class="chat-header">
-      <span><mat-icon>fitness_center</mat-icon>{{ selectedChannelName || 'Fitn3ss App' }} </span>
+      <span class="user-namee"><mat-icon class="icon-header">fitness_center</mat-icon>{{ selectedChannelName || 'Fitn3ss App' }} </span>
       <button mat-icon-button><mat-icon>exit_to_app</mat-icon></button>
     </mat-toolbar>
     <!-- Chat Main Content -->
 
-      <div class="chat-messages">
-        <div class="message" *ngFor="let message of messages">
-          <!-- <p class="meta">{{ message.sender }} <span>{{ message.timestamp }}</span></p> -->
+    <div class="chat-messages">
+      <div class="message" *ngFor="let message of messages">
+        <p class="user-name">{{ selectedChannelName }}: </p>
+        <div class="message-text">
           <p class="text">{{ message.message }}</p>
+          <p class="timestamp">{{ formatTimestamp(message.createdAt) }}</p> <!-- Add the date element here -->
         </div>
-        
+      </div>
+    </div>
+    
 
-      <!-- Chat Form -->
-      
+    <div class="input-container">
+      <button mat-icon-button class="attach-button"><mat-icon>add</mat-icon></button>
+      <mat-form-field class="message-input">
+        <input matInput #messageInput class = "rounded"
+          id="msg"
+          type="text"
+          placeholder="Enter Message"
+          required
+          autocomplete="off"
+          (input)="updateTextMessage($event)"
+        />
+      </mat-form-field>
+      <button mat-icon-button class="send-button" (click)="sendMessage()"><mat-icon>send</mat-icon></button>
     </div>
-    <div class="chat-form-container">
-      <form id="chat-form">
-        <mat-form-field class="message-input">
-          <input matInput #messageInput
-            id="msg"
-            type="text"
-            placeholder="Enter Message"
-            required
-            autocomplete="off"
-            
-            (input)="updateTextMessage($event)"
-          />
-        </mat-form-field>
-        <button mat-raised-button color="primary" (click)="sendMessage()"><mat-icon>send</mat-icon> Send</button>
-      </form>
-    </div>
-  </div>
 </mat-drawer-container>
