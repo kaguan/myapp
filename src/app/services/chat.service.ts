@@ -1,20 +1,24 @@
 import { Injectable, Query } from '@angular/core';
 import SendBird from 'sendbird';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 @Injectable({
     providedIn: 'root',
 })
           
 export class ChatService {
+    constructor(private http: HttpClient) {}
     sb: any;
      // https://dashboard.sendbird.com
     APP_ID = '3E5D9881-2E39-4986-992A-C9CD45E1B5D4';
+    API_TOKEN = '3d44fed23ea8ee5368ba21325cf6e08cd981e3f7';
 
     init() {
         this.sb = new SendBird({ appId: this.APP_ID });
         SendBird.setLogLevel(SendBird.LogLevel.ERROR);
     }
     connect(userId: string, token: any, callback: any) {
-        this.sb.connect(userId, token, (user: any, error: any) => {
+        this.sb.connect(userId, this.API_TOKEN, (user: any, error: any) => {
             callback(user, error);
         });
     }
@@ -25,6 +29,25 @@ export class ChatService {
 
     getConnectedUser() {
         return this.sb && this.sb.currentUser ? this.sb.currentUser : null;
+    }
+
+    
+    createUser(user_id: string, nickname: string, profile_url: string): Observable<any> {
+      const apiUrl = `https://api-3E5D9881-2E39-4986-992A-C9CD45E1B5D4.sendbird.com/v3/users`;
+      const apiToken = this.API_TOKEN;
+
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Api-Token': apiToken
+      });
+
+      const body = {
+        user_id: user_id,
+        nickname: nickname,
+        profile_url: profile_url
+      };
+
+      return this.http.post(apiUrl, JSON.stringify(body), {headers});
     }
 
     registerEventHandlers(UNIQUE_HANDLER_ID: string, callback: any) {

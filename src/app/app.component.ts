@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from './services/chat.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +17,8 @@ export class AppComponent implements OnInit{
   startConversationResult: string;
   conversations: Array<SendBird.GroupChannel> | null;
   textMessage: any;
+  userId: string;
+  userNickname: string;
 
   constructor(private chatService: ChatService) {}
 
@@ -24,7 +27,7 @@ export class AppComponent implements OnInit{
   }
 
   connect() {
-    this.chatService.connect('sendbird', null, (error: any, user: any) => {
+    this.chatService.connect('sendbird', '3d44fed23ea8ee5368ba21325cf6e08cd981e3f7', (error: any, user: any) => {
       if (!error) {
         // We are connected to Sendbird servers!
         this.registerEventHandlers();
@@ -32,6 +35,19 @@ export class AppComponent implements OnInit{
         this.connected = true;
       }
     });
+  }
+
+  createUser() {
+    this.chatService.createUser('test', '1234', '').subscribe(
+      response => {
+        console.log('User created successfully:', response);
+        // Handle the response or perform any additional actions
+      },
+      error => {
+        console.error('Error creating user:', error);
+        // Handle the error or display an error message
+      }
+    );
   }
 
   registerEventHandlers() {
