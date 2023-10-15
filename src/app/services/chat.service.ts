@@ -50,6 +50,25 @@ export class ChatService {
       return this.http.post(apiUrl, JSON.stringify(body), {headers});
     }
 
+    deleteUser(userId: string) {
+      const url = `https://api-3E5D9881-2E39-4986-992A-C9CD45E1B5D4.sendbird.com/v3/users/${userId}`;
+      const apiToken = this.API_TOKEN;
+
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Api-Token': apiToken
+      });
+
+      this.http.delete(url, { headers }).subscribe(
+        (response) => {
+          console.log('User deleted successfully', response);
+        },
+        (error) => {
+          console.error('Failed to delete user', error);
+        }
+      );
+    }
+
     registerEventHandlers(UNIQUE_HANDLER_ID: string, callback: any) {
         var channelHandler = new this.sb.ChannelHandler();
 

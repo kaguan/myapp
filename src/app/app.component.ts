@@ -38,7 +38,7 @@ export class AppComponent implements OnInit{
   }
 
   createUser() {
-    this.chatService.createUser('test', '1234', '').subscribe(
+    this.chatService.createUser('tested', '1234', '').subscribe(
       response => {
         console.log('User created successfully:', response);
         // Handle the response or perform any additional actions
@@ -48,6 +48,10 @@ export class AppComponent implements OnInit{
         // Handle the error or display an error message
       }
     );
+  }
+
+  deleteUser() {
+    this.chatService.deleteUser('tested')
   }
 
   registerEventHandlers() {
