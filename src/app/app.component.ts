@@ -17,8 +17,8 @@ export class AppComponent implements OnInit{
   startConversationResult: string;
   conversations: Array<SendBird.GroupChannel> | null;
   textMessage: any;
-  userId: string;
-  userNickname: string;
+  userId = 'tested';
+  userNickname = '1234';
 
   constructor(private chatService: ChatService) {}
 
@@ -38,7 +38,7 @@ export class AppComponent implements OnInit{
   }
 
   createUser() {
-    this.chatService.createUser('tested', '1234', '').subscribe(
+    this.chatService.createUser(this.userId, this.userNickname, '').subscribe(
       response => {
         console.log('User created successfully:', response);
         // Handle the response or perform any additional actions
@@ -51,7 +51,7 @@ export class AppComponent implements OnInit{
   }
 
   deleteUser() {
-    this.chatService.deleteUser('tested')
+    this.chatService.deleteUser(this.userId)
   }
 
   registerEventHandlers() {
@@ -72,7 +72,7 @@ export class AppComponent implements OnInit{
 
   startConversation() {
     let channelName = 'android-tutorial';
-    let userIds = ['01'];
+    let userIds = [this.userId, '01'];
     this.chatService.createGroupChannel(
       channelName,
       userIds,
