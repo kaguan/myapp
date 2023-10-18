@@ -147,7 +147,7 @@ export class ChatService {
 
     getMessagesFromChannel(groupChannel: SendBird.GroupChannel, callback: any) {
         const listQuery = groupChannel.createPreviousMessageListQuery();
-        listQuery.limit = 10;
+        listQuery.limit = 100;
         listQuery.includeMetaArray = true;
         listQuery.includeParentMessageInfo = true;
         // Retrieving previous messages.

@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { ChatService } from './services/chat.service';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
+  templateUrl: './app.component.html',  
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
@@ -20,7 +20,8 @@ export class AppComponent implements OnInit{
   userId = 'tested';
   userNickname = '1234';
 
-  constructor(private chatService: ChatService) {}
+  constructor(private chatService: ChatService, private cdr: ChangeDetectorRef) {}
+  @ViewChild('messageList') private messageList: ElementRef;
 
   ngOnInit() {
     this.chatService.init();
@@ -63,6 +64,8 @@ export class AppComponent implements OnInit{
           if (data.event == 'onMessageReceived' && this.messages) {
             if (data.data.channel.url == this.selectedChannel.url) {
               this.messages.push(data.data.message);
+              this.cdr.detectChanges();
+              this.scrollToBottom();
             }
           }
         }
@@ -137,5 +140,11 @@ export class AppComponent implements OnInit{
     );
   }
 
+  scrollToBottom() {
+    if (this.messageList) {
+      const element = this.messageList.nativeElement;
+      element.scrollTop = element.scrollHeight;
+    }
+  }
 }
 
