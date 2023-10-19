@@ -1,18 +1,13 @@
-import { Component, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ChatPageComponent } from './chat-page/chat-page.component';
-import { ChannelsPageComponent } from './channels-page/channels-page.component';
-
+import { ChatpageComponent } from './chatpage/chatpage.component';
 
 const routes: Routes = [
-  {path: 'channelsPage', component: ChannelsPageComponent},
-  {path: 'chat-page', component: ChatPageComponent},
+  {path:'chatpage',  component :ChatpageComponent},
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { 
-  
-}
+export class AppRoutingModule { }

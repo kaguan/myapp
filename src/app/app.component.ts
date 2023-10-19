@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { ChatService } from './services/chat.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
+  templateUrl: './app.component.html',  
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
@@ -16,22 +17,45 @@ export class AppComponent implements OnInit{
   startConversationResult: string;
   conversations: Array<SendBird.GroupChannel> | null;
   textMessage: any;
+  userId = 'tested3';
+  userNickname = '123';
 
-  constructor(private chatService: ChatService) {}
+  constructor(private chatService: ChatService, private cdr: ChangeDetectorRef) {}
+  @ViewChild('messageList') private messageList: ElementRef;
 
   ngOnInit() {
     this.chatService.init();
+    //changes to get the conversations in real time
+    this.connect();
+    this.registerEventHandlers();
   }
 
   connect() {
-    this.chatService.connect('sendbird', null, (error: any, user: any) => {
+    this.chatService.connect('sendbird', '3d44fed23ea8ee5368ba21325cf6e08cd981e3f7', (error: any, user: any) => {
       if (!error) {
         // We are connected to Sendbird servers!
-        this.registerEventHandlers();
+        //this.registerEventHandlers();
         this.getMyConversations();
         this.connected = true;
       }
     });
+  }
+
+  createUser() {
+    this.chatService.createUser(this.userId, this.userNickname, '').subscribe(
+      response => {
+        console.log('User created successfully:', response);
+        // Handle the response or perform any additional actions
+      },
+      error => {
+        console.error('Error creating user:', error);
+        // Handle the error or display an error message
+      }
+    );
+  }
+
+  deleteUser() {
+    this.chatService.deleteUser(this.userId)
   }
 
   registerEventHandlers() {
@@ -43,6 +67,8 @@ export class AppComponent implements OnInit{
           if (data.event == 'onMessageReceived' && this.messages) {
             if (data.data.channel.url == this.selectedChannel.url) {
               this.messages.push(data.data.message);
+              this.cdr.detectChanges();
+              this.scrollToBottom();
             }
           }
         }
@@ -52,7 +78,7 @@ export class AppComponent implements OnInit{
 
   startConversation() {
     let channelName = 'android-tutorial';
-    let userIds = ['01'];
+    let userIds = [this.userId, '01'];
     this.chatService.createGroupChannel(
       channelName,
       userIds,
@@ -62,6 +88,13 @@ export class AppComponent implements OnInit{
         } else {
           this.startConversationResult = 'Conversation created';
           this.getMyConversations();
+
+          //changes to get the conversations in real time
+          this.chatService.getMessages(groupChannel, (error: SendBird.SendBirdError, messages: any) => {
+            if (!error) {
+                this.messages = messages;
+            }
+        });
         }
       }
     );
@@ -117,5 +150,11 @@ export class AppComponent implements OnInit{
     );
   }
 
+  scrollToBottom() {
+    if (this.messageList) {
+      const element = this.messageList.nativeElement;
+      element.scrollTop = element.scrollHeight;
+    }
+  }
 }
 

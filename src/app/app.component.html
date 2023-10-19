@@ -1,8 +1,12 @@
 
-<app-channels-page> Channels </app-channels-page>
-
 <p>
   <button (click)="connect()">Connect to chat</button>
+</p>
+<p>
+  <button (click)="createUser()">Create User</button>
+</p>
+<p>
+  <button (click)="deleteUser()">Delete User</button>
 </p>
 <div>
   <button (click)="startConversation()">Start a conversation</button>
@@ -24,10 +28,9 @@
 </div>
 <div>
   <h3>Messages in the conversation</h3>
-  <ul>
+  <ul #messageList>
     <li *ngFor="let message of messages">
       {{ message['message'] }}
-      <!-- {{ message['createdAt'] }} -->
     </li>
   </ul>
   
