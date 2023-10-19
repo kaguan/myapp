@@ -171,7 +171,7 @@ export class ChatService {
               callback(null, error);
           }
       });
-  }
+    }
   
     sendMessage(
         channel: SendBird.GroupChannel | SendBird.OpenChannel,
