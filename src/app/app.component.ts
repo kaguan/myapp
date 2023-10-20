@@ -34,6 +34,7 @@ export class AppComponent implements OnInit{
     this.chatService.connect('sendbird', '3d44fed23ea8ee5368ba21325cf6e08cd981e3f7', (error: any, user: any) => {
       if (!error) {
         // We are connected to Sendbird servers!
+        //changes to get the conversations in real time
         //this.registerEventHandlers();
         this.getMyConversations();
         this.connected = true;
