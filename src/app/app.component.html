@@ -27,6 +27,14 @@
   </div>
 </div>
 <div>
+  <input type="text" [(ngModel)]="searchQuery" placeholder="Search group channels" (keyup)="search($event)">
+  <ul *ngIf="showAutocomplete">
+    <li *ngFor="let channel of autocompleteResults" (click)="selectAutocomplete(channel)">
+      {{ channel.name }}
+    </li>
+  </ul>
+</div>
+<div> 
   <h3>Messages in the conversation</h3>
   <ul #messageList>
     <li *ngFor="let message of messages">

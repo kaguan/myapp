@@ -1,6 +1,8 @@
 import { Component, OnInit, ElementRef, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { ChatService } from './services/chat.service';
-import { HttpClient } from '@angular/common/http';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { startWith, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -15,19 +17,32 @@ export class AppComponent implements OnInit{
   selectedChannel: SendBird.GroupChannel;
   messages: Array<SendBird.UserMessage | SendBird.AdminMessage> | null;
   startConversationResult: string;
-  conversations: Array<SendBird.GroupChannel> | null;
+  conversations: Array<SendBird.GroupChannel>;
   textMessage: any;
   userId = 'tested3';
   userNickname = '123';
+  searchQuery: string;
+  filteredChannels: any[];
+  autocompleteResults: any[];
+  showAutocomplete: boolean;
 
   constructor(private chatService: ChatService, private cdr: ChangeDetectorRef) {}
   @ViewChild('messageList') private messageList: ElementRef;
+
+  private _filter(value: string): any[] {
+    const filterValue = value.toLowerCase();
+    // Call the SendBirdService to get the list of channels
+    const channels = this.conversations;
+    // Filter the channels based on the search value
+    return channels.filter(channel => channel.name.toLowerCase().includes(filterValue));
+  }
 
   ngOnInit() {
     this.chatService.init();
     //changes to get the conversations in real time
     this.connect();
     this.registerEventHandlers();
+    this.getMyConversations();
   }
 
   connect() {
@@ -155,6 +170,23 @@ export class AppComponent implements OnInit{
       const element = this.messageList.nativeElement;
       element.scrollTop = element.scrollHeight;
     }
+  }
+
+  search(event: any) {
+    console.log(event.target.value);
+    this.filteredChannels = this.conversations.filter(channel => {
+      return channel.name.toLowerCase().includes(this.searchQuery.toLowerCase());
+    });
+    this.autocompleteResults = this.conversations.filter(channel => {
+      return channel.name.toLowerCase().startsWith(this.searchQuery.toLowerCase());
+    });
+    this.showAutocomplete = this.searchQuery.length > 0 && this.autocompleteResults.length > 0;
+  }
+
+  selectAutocomplete(channel: any) {
+    this.searchQuery = channel.name;
+    this.filteredChannels = this.conversations.filter(c => c.name === channel.name);
+    this.showAutocomplete = false;
   }
 }
 
