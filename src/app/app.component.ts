@@ -1,8 +1,5 @@
 import { Component, OnInit, ElementRef, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { ChatService } from './services/chat.service';
-import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { startWith, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -50,7 +47,7 @@ export class AppComponent implements OnInit{
       if (!error) {
         // We are connected to Sendbird servers!
         //this.registerEventHandlers();
-        this.getMyConversations();
+        //this.getMyConversations();
         this.connected = true;
       }
     });
@@ -173,7 +170,7 @@ export class AppComponent implements OnInit{
   }
 
   search(event: any) {
-    console.log(event.target.value);
+    //console.log(event.target.value);
     this.filteredChannels = this.conversations.filter(channel => {
       return channel.name.toLowerCase().includes(this.searchQuery.toLowerCase());
     });
