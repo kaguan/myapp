@@ -113,7 +113,7 @@ export class AppComponent implements OnInit{
   }
 
   getMyConversations() {
-    this.chatService.getMyGroupChannels(
+    this.chatService.getMyGroupChannels('sendbird',
       (
         error: SendBird.SendBirdError,
         groupChannels: Array<SendBird.GroupChannel>

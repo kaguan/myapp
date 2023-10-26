@@ -132,8 +132,8 @@ export class ChatService {
         );
     }
 
-    getMyGroupChannels(callback: any) {
-        const listQuery = this.sb.GroupChannel.createMyGroupChannelListQuery();
+    getMyGroupChannels(UserId: any, callback: any) {
+        const listQuery = this.sb.GroupChannel.createMyGroupChannelListQuery(UserId);
         listQuery.includeEmpty = true;
         listQuery.memberStateFilter = 'joined_only';
         listQuery.order = 'latest_last_message';
