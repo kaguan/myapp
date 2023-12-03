@@ -8,6 +8,11 @@
 <p>
   <button (click)="deleteUser()">Delete User</button>
 </p>
+<p>
+  <button (click)="createGlobalChat()">Create Global</button>
+</p>
+<button routerLink="/chatpage">Load Chatpage</button>
+<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 <div>
   <button (click)="startConversation()">Start a conversation</button>
   <div>
@@ -60,3 +65,7 @@
     </tr>
   </table>
 </div>
+<p>
+  <button (click)="inviteUser()">Invite Users</button>
+</p>
+<router-outlet></router-outlet>

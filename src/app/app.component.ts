@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { ChatService } from './services/chat.service';
+import SendBird from 'sendbird';
 
 @Component({
   selector: 'app-root',
@@ -11,17 +12,20 @@ export class AppComponent implements OnInit{
 
   connected = false;
   listConversationsResult: string | null;
+  globalChannel: SendBird.GroupChannel;
   selectedChannel: SendBird.GroupChannel;
   messages: Array<SendBird.UserMessage | SendBird.AdminMessage> | null;
   startConversationResult: string;
   conversations: Array<SendBird.GroupChannel>;
   textMessage: any;
-  userId = 'tested3';
+  userId = 'test3';
   userNickname = '123';
   searchQuery: string;
   filteredChannels: any[];
   autocompleteResults: any[];
   showAutocomplete: boolean;
+  joinUserIds: string[];
+  autoAcceptInvite = false;
 
   constructor(private chatService: ChatService, private cdr: ChangeDetectorRef) {}
   @ViewChild('messageList') private messageList: ElementRef;
@@ -37,7 +41,9 @@ export class AppComponent implements OnInit{
   ngOnInit() {
     this.chatService.init();
     //changes to get the conversations in real time
-    this.connect();
+    //this.connect();
+    // const sendbird = this.chatService.getSendbirdInstance();
+    this.chatService.authenticateUser('sendbird')
     this.registerEventHandlers();
     this.getMyConversations();
   }
@@ -46,8 +52,8 @@ export class AppComponent implements OnInit{
     this.chatService.connect('sendbird', '3d44fed23ea8ee5368ba21325cf6e08cd981e3f7', (error: any, user: any) => {
       if (!error) {
         // We are connected to Sendbird servers!
-        //this.registerEventHandlers();
-        //this.getMyConversations();
+        // this.registerEventHandlers();
+        // this.getMyConversations();
         this.connected = true;
       }
     });
@@ -64,7 +70,23 @@ export class AppComponent implements OnInit{
         // Handle the error or display an error message
       }
     );
+    this.chatService.getGlobalChat().then((channel: SendBird.GroupChannel) => {
+      this.globalChannel = channel;
+      this.joinUserIds = ['test'];
+      console.log(this.joinUserIds, this.globalChannel)
+      this.chatService.inviteUser(this.globalChannel, this.joinUserIds)
+      .then(response => {
+        console.log('Users invited successfully:', response);
+      })
+      .catch(error => {
+        console.error('Failed to invite users:', error);
+      });
+    }).catch((error: any) => {
+      // Handle any errors that occur during the retrieval
+      console.error('Failed to retrieve global chat:', error);
+    });
   }
+
 
   deleteUser() {
     this.chatService.deleteUser(this.userId)
@@ -129,6 +151,7 @@ export class AppComponent implements OnInit{
 
   getMessages(channel: SendBird.GroupChannel) {
     this.selectedChannel = channel;
+    console.log(this.selectedChannel);
     this.chatService.getMessagesFromChannel(
       channel,
       (
@@ -184,6 +207,41 @@ export class AppComponent implements OnInit{
     this.searchQuery = channel.name;
     this.filteredChannels = this.conversations.filter(c => c.name === channel.name);
     this.showAutocomplete = false;
+  }
+
+  inviteUser() {
+    const userIds = ['02', '03'];
+    this.chatService.inviteUser(this.selectedChannel, userIds)
+      .then(response => {
+        console.log('Users invited successfully:', response);
+      })
+      .catch(error => {
+        console.error('Failed to invite users:', error);
+      });
+  }
+
+  acceptInvite() {
+
+  }
+
+  declineInvite() {
+
+  }
+
+  createGlobalChat() {
+    let channelName = "Global Chat";
+    let userIds = [this.userId, '01'];
+    this.chatService.createGlobalChat(
+      channelName, 
+      userIds, 
+      (error: SendBird.SendBirdError, groupChannel: SendBird.GroupChannel) => {
+        if (error) {
+          console.error('Error creating supergroup:', error);
+        } else {
+          console.log('Supergroup created:', groupChannel);
+        }
+      }
+    );
   }
 }
 
