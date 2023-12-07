@@ -181,7 +181,7 @@ export class ChatService {
       });
     }
 
-    getMyGroupChannels(UserId: any, callback: any) {
+    getMyGroupChannels(UserId: string, callback: any) {
         const listQuery = this.sb.GroupChannel.createMyGroupChannelListQuery(UserId);
         listQuery.includeEmpty = true;
         listQuery.memberStateFilter = 'joined_only';
@@ -244,6 +244,14 @@ export class ChatService {
           resolve(response);
         }
       });
+    });
+  }
+
+  leaveChannel(channel: SendBird.GroupChannel, userId: string) {
+    channel.leave().then(() => {
+      console.log(`User with ID ${userId} has left the channel ${channel.name}`);
+    }).catch((error) => {
+      console.log('Error leaving channel', error);
     });
   }
 

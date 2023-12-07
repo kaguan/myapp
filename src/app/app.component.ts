@@ -44,6 +44,7 @@ export class AppComponent implements OnInit{
     //this.connect();
     // const sendbird = this.chatService.getSendbirdInstance();
     this.chatService.authenticateUser('sendbird')
+    //console.log(this.chatService.sb.getConnectionState())
     this.registerEventHandlers();
     this.getMyConversations();
   }
@@ -72,7 +73,7 @@ export class AppComponent implements OnInit{
     );
     this.chatService.getGlobalChat().then((channel: SendBird.GroupChannel) => {
       this.globalChannel = channel;
-      this.joinUserIds = ['test'];
+      this.joinUserIds = [this.userId];
       console.log(this.joinUserIds, this.globalChannel)
       this.chatService.inviteUser(this.globalChannel, this.joinUserIds)
       .then(response => {
@@ -135,7 +136,7 @@ export class AppComponent implements OnInit{
   }
 
   getMyConversations() {
-    this.chatService.getMyGroupChannels('sendbird',
+    this.chatService.getMyGroupChannels(this.userId,
       (
         error: SendBird.SendBirdError,
         groupChannels: Array<SendBird.GroupChannel>
@@ -242,6 +243,10 @@ export class AppComponent implements OnInit{
         }
       }
     );
+  }
+
+  leaveChannel() {
+    this.chatService.leaveChannel(this.selectedChannel, this.userId);
   }
 }
 
