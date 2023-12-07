@@ -64,6 +64,15 @@ export class AppComponent implements OnInit{
       '123',
       (data: { event: string; data: any }) => {
         console.log('New event: ' + data.event, data.data);
+
+        if (data.event === 'onUserJoined') {
+            alert(`User joined: ${data.data.user.nickname}`);
+        }
+
+        if (data.event === 'onUserLeft') {
+          alert(`User left: ${data.data.user.nickname}`);
+      }
+
         if (this.selectedChannel) {
           if (data.event == 'onMessageReceived' && this.messages) {
             if (data.data.channel.url == this.selectedChannel.url) {
@@ -78,6 +87,7 @@ export class AppComponent implements OnInit{
   }
 
   startConversation() {
+    
     let channelName = 'android-tutorial';
     let userIds = [this.userId, '01'];
     this.chatService.createGroupChannel(

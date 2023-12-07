@@ -71,16 +71,41 @@ export class ChatService {
 
     registerEventHandlers(UNIQUE_HANDLER_ID: string, callback: any) {
         var channelHandler = new this.sb.ChannelHandler();
-
+       
         channelHandler.onMessageReceived = (channel: any, message: any) => {
           callback({
             event: 'onMessageReceived',
+            
             data: {
               channel,
               message,
             },
           });
+
         };
+
+        channelHandler.onUserJoined = function (channel: any, user: any) {
+          callback({
+            event: 'onUserJoined',
+            data: {
+              channel,
+              user,
+            },
+          });
+        };
+
+        channelHandler.onUserLeft = function (channel: any, user: any) {
+          callback({
+            event: 'onUserLeft',
+            data: {
+              channel,
+              user,
+            },
+          });
+
+        };
+
+
         // channelHandler.onMessageUpdated = function (channel, message) {};
         // channelHandler.onMessageDeleted = function (channel, messageId) {};
         // channelHandler.onMentionReceived = function (channel, message) {};
@@ -113,6 +138,7 @@ export class ChatService {
 
         // Add this channel event handler to the `SendBird` instance.
         this.sb.addChannelHandler(UNIQUE_HANDLER_ID, channelHandler);
+      
     }
 
     createGroupChannel(
@@ -171,6 +197,16 @@ export class ChatService {
               callback(null, error);
           }
       });
+  }
+  private selectedChannel: SendBird.GroupChannel;
+
+      
+  setSelectedChannelName(channel: SendBird.GroupChannel) {
+    this.selectedChannel = channel;
+  }
+
+  getSelectedChannelName() {
+    return this.selectedChannel;
   }
   
     sendMessage(
