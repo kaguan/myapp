@@ -18,7 +18,7 @@ export class AppComponent implements OnInit{
   startConversationResult: string;
   conversations: Array<SendBird.GroupChannel>;
   textMessage: any;
-  userId = 'test3';
+  userId = 'help';
   userNickname = '123';
   searchQuery: string;
   filteredChannels: any[];
@@ -47,6 +47,7 @@ export class AppComponent implements OnInit{
     //console.log(this.chatService.sb.getConnectionState())
     this.registerEventHandlers();
     this.getMyConversations();
+    console.log(this.chatService.sb.getConnectionState())
   }
 
   connect() {

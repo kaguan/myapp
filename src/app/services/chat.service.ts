@@ -2,6 +2,7 @@ import { Injectable, Query } from '@angular/core';
 import SendBird from 'sendbird';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import BadWords from 'bad-words';
 @Injectable({
     providedIn: 'root',
 })
@@ -15,10 +16,14 @@ export class ChatService {
      // https://dashboard.sendbird.com
     APP_ID = '3E5D9881-2E39-4986-992A-C9CD45E1B5D4';
     API_TOKEN = '3d44fed23ea8ee5368ba21325cf6e08cd981e3f7';
+    //filter = new Filter();
+    filter = new BadWords();
 
     init() {
         this.sb = new SendBird({ appId: this.APP_ID });
         SendBird.setLogLevel(SendBird.LogLevel.ERROR);
+        console.log(this.filter.list)
+        console.log(this.filter.clean('what the fucking hellllllll'))
     }
     connect(userId: string, token: any, callback: any) {
         this.sb.connect(userId, this.API_TOKEN, (user: any, error: any) => {
@@ -228,7 +233,7 @@ export class ChatService {
         callback: any
       ) {
         const params = new this.sb.UserMessageParams();
-        params.message = message;
+        params.message = this.filter.clean(message);
         channel.sendUserMessage(params, (userMessage, error) => {
           callback(error, userMessage);
         });
