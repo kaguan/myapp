@@ -8,6 +8,11 @@
 <p>
   <button (click)="deleteUser()">Delete User</button>
 </p>
+<p>
+  <button (click)="createGlobalChat()">Create Global</button>
+</p>
+<button routerLink="/chatpage">Load Chatpage</button>
+<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 <div>
   <button (click)="startConversation()">Start a conversation</button>
   <div>
@@ -27,6 +32,14 @@
   </div>
 </div>
 <div>
+  <input type="text" [(ngModel)]="searchQuery" placeholder="Search group channels" (keyup)="search($event)">
+  <ul *ngIf="showAutocomplete">
+    <li *ngFor="let channel of autocompleteResults" (click)="selectAutocomplete(channel)">
+      {{ channel.name }}
+    </li>
+  </ul>
+</div>
+<div> 
   <h3>Messages in the conversation</h3>
   <ul #messageList>
     <li *ngFor="let message of messages">
@@ -56,3 +69,10 @@
     </tr>
   </table>
 </div>
+<p>
+  <button (click)="leaveChannel()">Leave Channel</button>
+</p>
+<p>
+  <button (click)="inviteUser()">Invite Users</button>
+</p>
+<router-outlet></router-outlet>
